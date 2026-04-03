@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terapias Médicas Avanzadas - Fisiatría e Intervencionismo</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        health: {
+                            green: '#4CAF87',
+                            darkgreen: '#2E9E72',
+                            blue: '#5BB8D4',
+                            darkblue: '#3A9EC2',
+                            light: '#F4F9F8',
+                            gray: '#F8FAFC'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'card': '0 4px 20px -2px rgba(0,0,0,0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #F8FAFC;
+        }
+
+        /* Splash Screen */
+        #splash-screen {
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            z-index: 9999;
+        }
+        .splash-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* SPA View Transitions */
+        .page-view {
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Parallax Overlay */
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.5) 0%, rgba(76, 175, 135, 0.5) 100%);
+        }
+
+        /* Interactive Cards */
+        .interactive-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .interactive-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(76, 175, 135, 0.2);
+            border-color: #4CAF87;
+        }
+
+        /* Floating WhatsApp */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .wa-float {
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* Backgrounds con overlay transparente */
+        .bg-section-overlay {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        .bg-section-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.45);
+            z-index: 0;
+        }
+        .section-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Glassmorphism para las tarjetas de texto */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 flex flex-col min-h-screen">
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen" class="fixed inset-0 bg-white flex flex-col items-center justify-center">
+        <img src="https://res.cloudinary.com/dway4iqeh/image/upload/v1775176612/logo_glwoug.png" alt="Cargando" class="h-40 animate-pulse">
+        <p class="mt-4 font-bold text-health-darkblue tracking-widest uppercase text-sm">Terapias Médicas Avanzadas</p>
+    </div>
+
+    <!-- NAVBAR TOP -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100" id="navbar">
+        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+            
+            <!-- Logo con Texto al costado -->
+            <a href="#inicio" class="nav-link-logo flex items-center gap-4 group">
+                <img src="https://res.cloudinary.com/dway4iqeh/image/upload/v1775176612/logo_glwoug.png" alt="Logo" class="h-14 group-hover:scale-105 transition-transform duration-300">
+                <div class="hidden sm:flex flex-col border-l-2 border-health-green/30 pl-4">
+                    <span class="text-lg font-extrabold text-health-darkblue leading-none">TERAPIAS MÉDICAS</span>
+                    <span class="text-[10px] tracking-[0.2em] font-bold text-health-green">AVANZADAS</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-1 h-full">
+                <a href="#inicio" class="nav-link h-full flex items-center px-4 text-sm font-semibold border-b-2 transition-all text-health-blue border-health-blue">Inicio</a>
+                <a href="#servicios" class="nav-link h-full flex items-center px-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-health-blue hover:bg-gray-50 transition-all">Servicios</a>
+                <a href="#nosotros" class="nav-link h-full flex items-center px-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-health-blue hover:bg-gray-50 transition-all">Especialidad</a>
+                <a href="#contacto" class="nav-link h-full flex items-center px-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-health-blue hover:bg-gray-50 transition-all">Contacto</a>
+                
+                <div class="pl-4 ml-2 border-l border-gray-200 h-10 flex items-center">
+                    <a href="https://wa.me/56923871570" target="_blank" class="bg-health-green text-white px-5 py-2 rounded-lg hover:bg-health-darkgreen transition-all shadow-md hover:shadow-lg flex items-center gap-2 text-sm font-semibold">
+                        <i class="far fa-calendar-check"></i> Agendar Hora
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-health-darkblue text-2xl focus:outline-none bg-health-light w-10 h-10 rounded-lg flex items-center justify-center" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div class="md:hidden hidden bg-white border-t absolute w-full shadow-xl" id="mobile-menu">
+            <div class="px-6 py-4 space-y-1 flex flex-col">
+                <a href="#inicio" class="nav-link mobile-link block py-3 px-4 rounded-lg bg-health-light text-health-blue font-semibold">Inicio</a>
+                <a href="#servicios" class="nav-link mobile-link block py-3 px-4 rounded-lg text-gray-600 font-medium hover:bg-gray-50">Servicios</a>
+                <a href="#nosotros" class="nav-link mobile-link block py-3 px-4 rounded-lg text-gray-600 font-medium hover:bg-gray-50">Especialidad</a>
+                <a href="#contacto" class="nav-link mobile-link block py-3 px-4 rounded-lg text-gray-600 font-medium hover:bg-gray-50">Contacto</a>
+                <a href="https://wa.me/56923871570" target="_blank" class="block py-3 px-4 rounded-lg bg-health-green text-white font-bold text-center mt-2">Agendar Evaluación</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+
+        <!-- 1. VISTA: INICIO -->
+        <section id="inicio" class="page-view active">
+            <div class="relative h-[90vh] min-h-[650px] flex items-center justify-center bg-fixed bg-center bg-cover" style="background-image: url('https://res.cloudinary.com/dway4iqeh/image/upload/v1775175719/1_kyk8ro.png');">
+                <div class="absolute inset-0 hero-overlay"></div>
+                <div class="container mx-auto px-6 relative z-10">
+                    <div class="max-w-4xl text-center md:text-left mx-auto md:mx-0">
+                        <span class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/20 text-white backdrop-blur-md text-sm font-semibold tracking-wider mb-6 border border-white/30 shadow-sm">
+                            <i class="fas fa-microscope text-health-green bg-white rounded-full p-1 w-6 h-6 flex items-center justify-center text-xs"></i>
+                            Clínica Fisiátrica Especializada
+                        </span>
+                        <h1 class="text-4xl md:text-7xl font-bold text-white mb-6 leading-[1.1] drop-shadow-2xl">
+                            Regeneración <br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-200">Precisión y Bienestar</span>
+                        </h1>
+                        <p class="text-lg md:text-2xl text-white mb-10 max-w-2xl font-medium drop-shadow-md">
+                            Intervencionismo Ecoguiado de vanguardia. Soluciones definitivas y no quirúrgicas para el tratamiento del dolor crónico.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            <a href="https://wa.me/56923871570" target="_blank" class="bg-white text-health-darkblue font-bold py-4 px-8 rounded-xl hover:bg-gray-50 transition-all shadow-xl flex items-center justify-center gap-3">
+                                <i class="fab fa-whatsapp text-2xl text-green-500"></i> Agendar Evaluación
+                            </a>
+                            <a href="#servicios" class="nav-link text-white border-2 border-white/70 backdrop-blur-sm hover:bg-white/20 font-medium py-4 px-8 rounded-xl transition-all flex items-center justify-center gap-2">
+                                Ver Tratamientos <i class="fas fa-arrow-right text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Info Bar -->
+            <div class="container mx-auto px-6 -mt-16 relative z-20 pb-20">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-card p-6 rounded-2xl shadow-soft flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-health-blue text-white flex items-center justify-center text-2xl shrink-0">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">100% Ecoguiado</h4>
+                            <p class="text-sm text-gray-700 font-medium">Máxima precisión anatómica.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl shadow-soft flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-health-green text-white flex items-center justify-center text-2xl shrink-0">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Mínimamente Invasivo</h4>
+                            <p class="text-sm text-gray-700 font-medium">Recuperación rápida y segura.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl shadow-soft flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-health-darkblue text-white flex items-center justify-center text-2xl shrink-0">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Médico Especialista</h4>
+                            <p class="text-sm text-gray-700 font-medium">Fisiatría y Rehabilitación.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. VISTA: SERVICIOS -->
+        <section id="servicios" class="page-view py-24 bg-section-overlay" style="background-image: url('https://res.cloudinary.com/dway4iqeh/image/upload/v1775175844/2_vznpl7.png');">
+            <div class="container mx-auto px-6 section-content">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-gray-400/50 pb-10">
+                    <div class="max-w-xl">
+                        <h2 class="text-health-darkgreen font-extrabold tracking-widest uppercase text-sm mb-3 flex items-center gap-2">
+                            <span class="w-8 h-[2px] bg-health-darkgreen"></span> Áreas de Práctica
+                        </h2>
+                        <h3 class="text-4xl md:text-5xl font-bold text-gray-900 drop-shadow-sm">Nuestras Especialidades</h3>
+                    </div>
+                    <p class="text-gray-900 max-w-md mt-6 md:mt-0 text-lg font-semibold leading-relaxed">
+                        Abordamos patologías complejas con tecnología ecográfica en tiempo real y terapias biológicas regenerativas.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="glass-card p-10 rounded-[2.5rem] shadow-soft interactive-card relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 rounded-2xl bg-health-blue text-white flex items-center justify-center text-3xl mb-8 shadow-lg">
+                                <i class="fas fa-dna"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-gray-900 mb-4">Medicina Regenerativa</h4>
+                            <p class="text-gray-800 mb-8 leading-relaxed font-medium">Técnicas biológicas avanzadas para estimular la reparación natural y efectiva de tus tejidos dañados.</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-start text-gray-900 font-semibold bg-white/40 p-3 rounded-xl border border-white/50">
+                                    <i class="fas fa-check text-health-darkgreen mt-1 mr-3"></i>
+                                    <span>PRP: Plasma Rico en Plaquetas.</span>
+                                </li>
+                                <li class="flex items-start text-gray-900 font-semibold bg-white/40 p-3 rounded-xl border border-white/50">
+                                    <i class="fas fa-check text-health-darkgreen mt-1 mr-3"></i>
+                                    <span>Proloterapia: Fortalecimiento ligamentario.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-10 rounded-[2.5rem] shadow-soft interactive-card relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 rounded-2xl bg-health-green text-white flex items-center justify-center text-3xl mb-8 shadow-lg">
+                                <i class="fas fa-bone"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-gray-900 mb-4">Lesiones Musculoesqueléticas</h4>
+                            <p class="text-gray-800 mb-8 leading-relaxed font-medium">Tratamiento integral y focalizado de patologías del aparato locomotor para recuperar movilidad.</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-gray-900 font-semibold bg-white/40 p-3 rounded-xl border border-white/50"><i class="fas fa-check text-health-darkgreen mr-3"></i> Lumbago Crónico.</li>
+                                <li class="flex items-center text-gray-900 font-semibold bg-white/40 p-3 rounded-xl border border-white/50"><i class="fas fa-check text-health-darkgreen mr-3"></i> Artrosis y Lesiones.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-10 rounded-[2.5rem] shadow-soft interactive-card relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 rounded-2xl bg-health-darkblue text-white flex items-center justify-center text-3xl mb-8 shadow-lg">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold text-gray-900 mb-4">Dolor Neuropático</h4>
+                            <p class="text-gray-800 mb-8 leading-relaxed font-medium">Abordaje preciso y seguro de nervios periféricos bajo visualización y guía ecográfica directa.</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-center text-gray-900 font-semibold bg-white/40 p-3 rounded-xl border border-white/50"><i class="fas fa-check text-health-darkgreen mr-3"></i> Neuralgia y Ciática.</li>
+                                <li class="flex items-center text-gray-900 font-semibold bg-white/40 p-3 rounded-xl border border-white/50"><i class="fas fa-check text-health-darkgreen mr-3"></i> Túnel Carpiano.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. VISTA: ESPECIALIDAD (Fondo y Contenido Actualizado) -->
+        <section id="nosotros" class="page-view py-24 bg-section-overlay" style="background-image: url('https://res.cloudinary.com/dway4iqeh/image/upload/v1775178622/Profesional_m%C3%A9dico_analizando_una_resonancia_n5yvpj.png');">
+            <div class="container mx-auto px-6 section-content">
+                <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                    <!-- Cuadro Izquierdo Actualizado -->
+                    <div class="lg:w-1/2 relative w-full">
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-health-green/40 to-health-blue/40 rounded-[3rem] blur-2xl opacity-70"></div>
+                        <img src="https://res.cloudinary.com/dway4iqeh/image/upload/v1775178513/23_gnzljs.jpg" alt="Dra. Sarah Elguieta" class="relative rounded-[2.5rem] shadow-2xl object-cover h-[550px] w-full border-[12px] border-white/80">
+                        
+                        <!-- Tarjeta Informativa Actualizada -->
+                        <div class="absolute -bottom-10 -right-6 glass-card p-8 rounded-3xl shadow-2xl flex items-start gap-4 border border-white max-w-sm">
+                            <div class="bg-health-blue text-white p-4 rounded-2xl text-2xl shrink-0">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div>
+                                <p class="font-extrabold text-health-darkblue text-xl leading-tight mb-1">Dra. Sarah Elgueta Lizarrague</p>
+                                <p class="text-sm text-health-darkgreen font-bold uppercase tracking-wider mb-3">Médico Fisiatra</p>
+                                <hr class="border-gray-300 mb-3">
+                                <ul class="text-[11px] text-gray-800 font-bold space-y-1 leading-tight">
+                                    <li>• Rehabilitación General</li>
+                                    <li>• ACV - Órtesis - Prótesis</li>
+                                    <li>• Patología Musculoesquelético</li>
+                                    <li>• Intervencionismo Ecoguiado en Dolor</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <div class="inline-flex items-center gap-2 bg-health-darkblue text-white px-5 py-2 rounded-full font-bold text-sm mb-8 shadow-lg">
+                            <i class="fas fa-info-circle"></i> Nuestra Filosofía
+                        </div>
+                        <h3 class="text-5xl font-bold text-gray-900 mb-8 leading-tight drop-shadow-sm">
+                            Resultados precisos con <span class="text-health-darkgreen">Ecografía</span>
+                        </h3>
+                        <div class="glass-card p-8 rounded-[2rem] border border-white/60 mb-8">
+                            <p class="text-gray-900 mb-6 text-xl leading-relaxed font-bold">
+                                En Terapias Médicas Avanzadas, diagnosticamos y abordamos el tejido específico que origina tu dolor.
+                            </p>
+                            <p class="text-gray-800 text-lg leading-relaxed font-medium">
+                                El Intervencionismo Ecoguiado nos permite visualizar músculos, tendones y nervios en tiempo real para garantizar precisión milimétrica en cada procedimiento.
+                            </p>
+                        </div>
+                        
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="glass-card px-6 py-4 rounded-2xl flex items-center gap-4 border border-white/80 group">
+                                <i class="fas fa-shield-alt text-health-blue text-2xl group-hover:scale-110 transition-transform"></i> 
+                                <span class="font-bold text-gray-900">Máxima Seguridad</span>
+                            </div>
+                            <div class="glass-card px-6 py-4 rounded-2xl flex items-center gap-4 border border-white/80 group">
+                                <i class="fas fa-bullseye text-health-blue text-2xl group-hover:scale-110 transition-transform"></i> 
+                                <span class="font-bold text-gray-900">Precisión Real</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. VISTA: CONTACTO (Fondo Actualizado con 4_lsqmdr.png) -->
+        <section id="contacto" class="page-view py-24 bg-section-overlay" style="background-image: url('https://res.cloudinary.com/dway4iqeh/image/upload/v1775176884/4_lsqmdr.png');">
+            <div class="container mx-auto px-6 section-content">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="inline-block bg-health-blue text-white px-6 py-2 rounded-full font-bold text-sm mb-4 shadow-lg">
+                        Atención a Pacientes
+                    </span>
+                    <h3 class="text-5xl font-bold text-gray-900 mb-6 drop-shadow-sm">Reserva tu Atención</h3>
+                    <p class="text-gray-800 text-lg font-bold">Agenda tus horas y evaluaciones directamente por WhatsApp o visítanos en nuestra consulta.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- WhatsApp -->
+                    <div class="glass-card p-10 rounded-[2.5rem] shadow-soft border border-white/50 flex flex-col items-center text-center group hover:border-[#25D366] transition-all">
+                        <div class="w-20 h-20 rounded-3xl bg-[#25D366]/20 text-[#25D366] flex items-center justify-center text-4xl mb-8 group-hover:rotate-12 transition-transform shadow-sm">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-3">WhatsApp Oficial</h4>
+                        <p class="text-gray-700 mb-8 font-bold">Atención rápida y coordinación de citas.</p>
+                        <a href="https://wa.me/56923871570" target="_blank" class="mt-auto bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-[#20bd5a] transition-all w-full justify-center shadow-lg hover:shadow-[#25D366]/30">
+                            Chat de Agendamiento
+                        </a>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="glass-card p-10 rounded-[2.5rem] shadow-soft border border-white/50 flex flex-col items-center text-center group hover:border-health-blue transition-all">
+                        <div class="w-20 h-20 rounded-3xl bg-health-blue/20 text-health-blue flex items-center justify-center text-4xl mb-8 group-hover:scale-110 transition-transform shadow-sm">
+                            <i class="far fa-envelope"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-3">Correo Electrónico</h4>
+                        <p class="text-gray-700 mb-8 font-bold">Para envío de informes y exámenes.</p>
+                        <a href="mailto:terapiasmedicasavanzadas@gmail.com" class="mt-auto border-2 border-health-blue text-health-blue px-8 py-3.5 rounded-2xl font-bold flex items-center gap-3 hover:bg-health-blue hover:text-white transition-all w-full justify-center">
+                            Enviar Mensaje
+                        </a>
+                    </div>
+
+                    <!-- Ubicación -->
+                    <div class="glass-card p-10 rounded-[2.5rem] shadow-soft border border-white/50 flex flex-col items-center text-center group hover:border-health-green transition-all">
+                        <div class="w-20 h-20 rounded-3xl bg-health-green/20 text-health-green flex items-center justify-center text-4xl mb-8 group-hover:translate-y-[-5px] transition-transform shadow-sm">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-gray-900 mb-3">Nuestra Consulta</h4>
+                        <p class="text-gray-900 font-extrabold mb-1 uppercase tracking-tighter">O'Higgins 77, Oficina 1905</p>
+                        <p class="text-gray-800 text-sm mb-8 font-bold">Concepción, Región del Biobío.</p>
+                        <div class="mt-auto pt-6 border-t border-gray-300 w-full">
+                            <a href="https://rehabilitacionclinicaavanzada.cl" target="_blank" class="text-health-darkgreen font-black text-sm hover:underline flex items-center justify-center gap-2">
+                                <i class="fas fa-globe"></i> Web Aliada
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-12 text-center">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-4">
+                    <img src="https://res.cloudinary.com/dway4iqeh/image/upload/v1775176612/logo_glwoug.png" alt="Logo TMA" class="h-16">
+                    <div class="text-left border-l-2 border-gray-100 pl-4">
+                        <p class="font-black text-gray-800 text-lg leading-none mb-1">TMA SpA</p>
+                        <p class="text-[10px] tracking-widest uppercase font-bold text-health-green">Terapias Médicas Avanzadas</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-10 text-sm font-bold text-gray-400">
+                    <a href="#inicio" class="hover:text-health-blue transition-colors">Inicio</a>
+                    <a href="#servicios" class="hover:text-health-blue transition-colors">Servicios</a>
+                    <a href="#nosotros" class="hover:text-health-blue transition-colors">Especialidad</a>
+                </div>
+            </div>
+            <div class="mt-10 pt-8 border-t border-gray-50 text-gray-400 text-xs font-medium">
+                &copy; <span id="year"></span> Terapias Médicas Avanzadas SpA. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÓN WHATSAPP -->
+    <a href="https://wa.me/56923871570" target="_blank" class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-2xl hover:scale-110 transition-transform duration-300 wa-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Splash Screen
+            const splash = document.getElementById('splash-screen');
+            setTimeout(() => { splash.classList.add('splash-hidden'); }, 1200);
+
+            // Year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Mobile Menu
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+                const icon = btn.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+
+            // SPA Routing
+            function handleRoute() {
+                let hash = window.location.hash || '#inicio';
+                if (!document.querySelector(hash)) hash = '#inicio';
+
+                document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
+                document.querySelector(hash).classList.add('active');
+
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    const isHash = link.getAttribute('href') === hash;
+                    link.classList.toggle('text-health-blue', isHash);
+                    link.classList.toggle('border-health-blue', isHash);
+                    link.classList.toggle('text-gray-500', !isHash);
+                    link.classList.toggle('border-transparent', !isHash);
+                });
+
+                menu.classList.add('hidden');
+                btn.querySelector('i').className = 'fas fa-bars';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            window.addEventListener('hashchange', handleRoute);
+            handleRoute();
+            
+            document.querySelector('.nav-link-logo').addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.hash = '#inicio';
+            });
+        });
+    </script>
+</body>
+</html>
